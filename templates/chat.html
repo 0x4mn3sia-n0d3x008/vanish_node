@@ -21,12 +21,15 @@
     }
     #chat-box {
     padding: 1rem;
-    height: 85vh;        
-    max-height: 85vh;
-    overflow-y: auto;
+    height: 70vh;      /* keep this tall */
+    width: 80vw;       /* make it wide, 80% of viewport width */
+    max-width: 800px;  /* max width so it’s not too crazy on big screens */
+    overflow-y: auto;  /* scroll vertically */
     border: 1px solid #444;
-    margin: 1rem;
-    background: #000;
+    margin: 1rem auto; /* center horizontally */
+    background-color: #000; /* optional: keep terminal black */
+    color: #0f0;      /* green text */
+    font-family: monospace;
     }
     .message {
       margin-bottom: 8px;
