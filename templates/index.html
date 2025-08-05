@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🕹️ Vanish Portal</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <pre>
+ _______            _____                ________        .__        
+\   _  \ ___  ___ /  |  |  _____   ____ \_____  \  _____|__|____   
+/  /_\  \\  \/  //   |  |_/     \ /    \  _(__  < /  ___/  \__  \  
+\  \_/   \>    </    ^   /  Y Y  \   |  \/       \\___ \|  |/ __ \_
+ \_____  /__/\_ \____   ||__|_|  /___|  /______  /____  >__(____  /
+       \/      \/    |__|      \/     \/       \/     \/        \/ 
+                                        0x4mn3sia_n0d3x008
+  </pre>
+
+  <h2>💬 Welcome to Vanish Chat</h2>
+  <p>Enter a room code to join or create a new one.</p>
+
+  <form id="joinForm">
+    <label for="roomCode">🔑 Room Code:</label>
+    <input type="text" id="roomCode" placeholder="e.g. ABC123" required maxlength="10">
+    <button type="submit">Join Room</button>
+  </form>
+
+  <p>or...</p>
+
+  <button onclick="createRoom()">🎲 Create Random Room</button>
+
+  <script>
+    function generateRoomCode(length = 6) {
+        const charset = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no I/O/1/0 to avoid confusion
+        let code = '';
+        for (let i = 0; i < length; i++) {
+        const randIndex = Math.floor(Math.random() * charset.length);
+        code += charset[randIndex];
+     }
+     return code;
+    }
+
+function createRoom() {
+  const code = generateRoomCode();
+  window.location.href = `/chat?room=${code}`;
+}
+
+
+    document.getElementById("joinForm").onsubmit = function(e) {
+      e.preventDefault();
+      const code = document.getElementById("roomCode").value.trim().toUpperCase();
+      if (code) {
+        window.location.href = `/chat?room=${code}`;
+      }
+    };
+  </script>
+</body>
+</html>

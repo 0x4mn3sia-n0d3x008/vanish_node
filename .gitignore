@@ -1,0 +1,51 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.env/
+*.env
+
+# Logs and local databases
+*.log
+*.sqlite3
+*.db
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Node modules (in case you add frontend tools later)
+node_modules/
+
+# Heroku-related
+# (We allow Procfile and runtime.txt, don't block them!)
+
+# VSCode or editor configs
+.vscode/
+.idea/
+
+# OS-specific
+*.swp
+
+# Python egg info
+*.egg-info/
+
+# Test coverage
+.coverage
+htmlcov/
+.tox/
+pytest_cache/
+
+# Build artifacts
+build/
+dist/
+*.egg
+
+# Misc
+*.bak
+*.old
+*.orig

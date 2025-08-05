@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Secure Room - 0x4mn3sia</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <style>
+    body {
+      background-color: black;
+      color: #00FF00;
+      font-family: monospace;
+      margin: 0;
+      padding: 0;
+    }
+    pre.banner {
+      white-space: pre;
+      padding: 1rem;
+      color: #00ff00;
+      margin: 0;
+    }
+    #chat-box {
+    padding: 1rem;
+    height: 85vh;        
+    max-height: 85vh;
+    overflow-y: auto;
+    border: 1px solid #444;
+    margin: 1rem;
+    background: #000;
+    }
+    .message {
+      margin-bottom: 8px;
+    }
+    .self {
+      color: #00ffff;
+      font-weight: bold;
+    }
+    .timestamp {
+      font-size: 0.8em;
+      color: #888;
+      margin-left: 10px;
+    }
+    #input-form {
+      display: flex;
+      padding: 1rem;
+      margin: 0 1rem 1rem 1rem;
+    }
+    #message-input {
+      flex: 1;
+      padding: 10px;
+      font-family: monospace;
+      background-color: #111;
+      color: #0f0;
+      border: 1px solid #555;
+      outline: none;
+    }
+    #send-btn {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background-color: #222;
+      color: #0f0;
+      border: 1px solid #555;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #send-btn:hover {
+      background-color: #00cc00;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <pre class="banner">
+ _______            _____                ________        .__        
+\   _  \ ___  ___ /  |  |  _____   ____ \_____  \  _____|__|____   
+/  /_\  \\  \/  //   |  |_/     \ /    \  _(__  < /  ___/  \__  \  
+\  \_/   \>    ____(____  /
+       \/      \/    |__|      \/     \/       \/     \/        \/ 
+                                        {node_0x4mn3sia_n0d3x008}
+  </pre>
+
+  <div id="chat-box" aria-live="polite" aria-relevant="additions"></div>
+
+  <form id="input-form" autocomplete="off" aria-label="Send message form">
+    <input type="text" id="message-input" placeholder="Enter your message..." required aria-required="true" />
+    <button type="submit" id="send-btn">Send</button>
+  </form>
+
+  <script>
+    const socket = io();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const room = urlParams.get('room');
+
+    let username = null;
+
+    socket.emit('join', { room });
+
+    socket.on('assign_username', (data) => {
+      username = data.username;
+      console.log('Your username:', username);
+    });
+
+    socket.on('receive_message', (data) => {
+      addMessage(data);
+    });
+
+    socket.on('user_joined', (data) => {
+      addSystemMessage(`${data.username} joined the room.`);
+    });
+
+    const chatBox = document.getElementById('chat-box');
+
+    function addMessage(data) {
+      const msgDiv = document.createElement('div');
+      msgDiv.classList.add('message');
+
+      if (data.username === username) {
+        msgDiv.classList.add('self');
+      }
+
+      msgDiv.innerHTML = `<strong>${data.username}</strong>: ${escapeHtml(data.message)} <span class="timestamp">${data.timestamp}</span>`;
+      chatBox.appendChild(msgDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Vanish after 45 seconds
+      setTimeout(() => {
+        msgDiv.remove();
+      }, 45000);
+    }
+
+    function addSystemMessage(msg) {
+      const sysDiv = document.createElement('div');
+      sysDiv.classList.add('message');
+      sysDiv.style.color = '#ff5555';
+      sysDiv.style.fontStyle = 'italic';
+      sysDiv.textContent = msg;
+      chatBox.appendChild(sysDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    document.getElementById('input-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const inputField = document.getElementById('message-input');
+      const message = inputField.value.trim();
+      if (!message || !username) return;
+      socket.emit('send_message', { username, message, room });
+      inputField.value = '';
+    });
+
+    // Basic escape to avoid HTML injection
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, function(m) {
+        return {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        }[m];
+      });
+    }
+  </script>
+</body>
+</html>

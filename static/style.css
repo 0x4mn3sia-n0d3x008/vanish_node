@@ -1,0 +1,36 @@
+  body {
+      margin: 0;
+      background-color: #0d0d0d;
+      color: #00ff99;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+    }
+
+    pre.ascii-art {
+      margin-top: 20px;
+      white-space: pre;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .center-content {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    input, button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      font-family: inherit;
+      background: black;
+      color: #00ff99;
+      border: 1px solid #00ff99;
+    }
+
+    button:hover {
+      background-color: #003300;
+    }
