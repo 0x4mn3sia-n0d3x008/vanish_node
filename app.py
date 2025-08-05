@@ -3,6 +3,7 @@ from flask_socketio import SocketIO, join_room, emit
 from datetime import datetime
 import random
 import string
+import os 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super_secret_key'
@@ -48,4 +49,5 @@ def handle_message(data):
     }, room=room)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host="0.0.0.0", port=port)
